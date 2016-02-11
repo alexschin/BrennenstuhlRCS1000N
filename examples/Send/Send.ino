@@ -45,7 +45,7 @@ BrennenstuhlRCS1000N rfSwitch(PIN_RFSWITCH_SEND, BrennenstuhlRCS1000N::NO_PIN);
 void setup() {
   Serial.begin(115200); 
   #if defined(ESP8266)
-    delay(100); Serial.println();
+  delay(100); Serial.println();
   #endif
   
   Serial.println(F("## BrennenstuhlRCS1000N"));
@@ -75,11 +75,12 @@ void loop() {
             rfSwitch.sendSwitchOn(SENDER_ID, DEVICE_A);
             rfSwitch.sendSwitchOn(SENDER_ID, DEVICE_B);
             rfSwitch.sendSwitchOn(SENDER_ID, DEVICE_C);
+            rfSwitch.sendSwitchOn(SENDER_ID, DEVICE_D);
             break;
           case false:
             rfSwitch.sendSwitchOff(SENDER_ID, DEVICE_A);
             rfSwitch.sendSwitchOff(SENDER_ID, DEVICE_B);
-            rfSwitch.sendSwitchOff(SENDER_ID, DEVICE_C);
+            rfSwitch.sendSwitchOff(SENDER_ID, DEVICE_D);
             break;
         }
         switch_state = !!!switch_state;
