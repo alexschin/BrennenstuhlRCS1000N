@@ -80,6 +80,7 @@ void loop() {
           case false:
             rfSwitch.sendSwitchOff(SENDER_ID, DEVICE_A);
             rfSwitch.sendSwitchOff(SENDER_ID, DEVICE_B);
+            rfSwitch.sendSwitchOff(SENDER_ID, DEVICE_C);
             rfSwitch.sendSwitchOff(SENDER_ID, DEVICE_D);
             break;
         }
