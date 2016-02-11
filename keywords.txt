@@ -1,0 +1,54 @@
+#######################################
+# Syntax Coloring Map For BrennenstuhlRCS1000N
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+BrennenstuhlRCS1000N	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+##########
+#SENDS Begin
+##########
+sendSwitchOn		KEYWORD2
+sendSwitchOff		KEYWORD2
+send				KEYWORD2
+getSendRepeat		KEYWORD2
+setSendRepeat		KEYWORD2
+getSendPreDelay		KEYWORD2
+setSendPreDelay		KEYWORD2
+##########
+#SENDS End
+##########
+
+##########
+#RECEIVE Begin
+##########
+recv		KEYWORD2
+getRecvSenderId		KEYWORD2
+getRecvDeviceId		KEYWORD2	
+getRecvCommand		KEYWORD2
+getRecvTimeout		KEYWORD2
+setRecvTimeout		KEYWORD2
+##########
+#RECEIVE End
+##########
+
+##########
+#OTHERS Begin
+##########
+NO_PIN				KEYWORD2
+COMMAND_ON			KEYWORD2
+COMMAND_OFF			KEYWORD2
+##########
+#OTHERS End
+##########
+
+#######################################
+# Constants (LITERAL1)
+#######################################
