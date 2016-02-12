@@ -30,10 +30,10 @@
           (((((int)senderId) & 0b11111) << 7) | ((((int)deviceId) & 0b11111) << 2) | (((int)command) & 0b11))
           
 #define BrennenstuhlRCS1000N_CODE_ON(senderId, deviceId) \
-          BrennenstuhlRCS1000N_CODE(senderId, deviceId, BrennenstuhlRCS1000N::COMMAND_ON)
+          BrennenstuhlRCS1000N_CODE(senderId, deviceId, BrennenstuhlRCS1000N::SWITCH_ON)
 
 #define BrennenstuhlRCS1000N_CODE_OFF(senderId, deviceId) \
-          BrennenstuhlRCS1000N_CODE(senderId, deviceId, BrennenstuhlRCS1000N::COMMAND_OFF)
+          BrennenstuhlRCS1000N_CODE(senderId, deviceId, BrennenstuhlRCS1000N::SWITCH_OFF)
 
 
 class BrennenstuhlRCS1000N {
@@ -57,12 +57,15 @@ class BrennenstuhlRCS1000N {
     };
 
 
+  private:
+    int _send_repeat = 6; // *** resend 6 times ***
   public:
-    int _send_repeat    = 6; // *** resend 5 times ***
     inline int getSendRepeat() const __attribute__((always_inline)) { return _send_repeat; };
     inline int setSendRepeat(int repeat) __attribute__((always_inline)) { _send_repeat = repeat; };
     
+  private:
     int _send_pre_delay = 10; // *** 10 ms ***
+  public:
     inline int getSendPreDelay() const __attribute__((always_inline)) { return _send_pre_delay; };
     inline int setSendPreDelay(int pre_delay) __attribute__((always_inline)) { _send_pre_delay = pre_delay; };
 
@@ -75,16 +78,17 @@ class BrennenstuhlRCS1000N {
 
     int getRecvPulseWidthUS();
     
+  private:
+    int _recv_timeout = 250;
   public:
-    int _recv_timeout = 200;
     inline int getRecvTimeout() const __attribute__((always_inline))           { return _recv_timeout; };
     inline int setRecvTimeout(int recv_timeout) __attribute__((always_inline)) { _recv_timeout = recv_timeout; };
 
 
   public:
-    static const int NO_PIN      = 0xff;
-    static const int COMMAND_ON  = 0b10;
-    static const int COMMAND_OFF = 0b01;
+    static const int NO_PIN     = 0xff;
+    static const int SWITCH_ON  = 0b10;
+    static const int SWITCH_OFF = 0b01;
 };
 
 #endif

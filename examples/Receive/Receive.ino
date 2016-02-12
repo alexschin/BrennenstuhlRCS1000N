@@ -32,30 +32,27 @@
 #define RFSWITCH_E      0b00001
 
 #if defined(ESP8266)
-  #define PIN_RFSWITCH_SEND  D4
   #define PIN_RFSWITCH_RECV  D2
 #else
-  #define PIN_RFSWITCH_SEND  4
   #define PIN_RFSWITCH_RECV  2
 #endif
 
-BrennenstuhlRCS1000N rfSwitch(PIN_RFSWITCH_SEND, PIN_RFSWITCH_RECV);
+BrennenstuhlRCS1000N rfSwitch(BrennenstuhlRCS1000N::NO_PIN, PIN_RFSWITCH_RECV);
 
 
 void setup() {
+  ::pinMode(D4, OUTPUT); ::digitalWrite(D4, LOW);
+  
   Serial.begin(115200); 
   #if defined(ESP8266)
-	delay(100); Serial.println();
+  delay(100); Serial.println();
   #endif
   
   Serial.println(F("## BrennenstuhlRCS1000N"));
-  Serial.print(F("## PIN_RFSWITCH_SEND = ")); Serial.println(PIN_RFSWITCH_SEND, DEC);
   Serial.print(F("## PIN_RFSWITCH_RECV = ")); Serial.println(PIN_RFSWITCH_RECV, DEC);
 
   rfSwitch.begin();
-  /* rfSwitch.setSendRepeat(6);    */ Serial.print(F("## rfSwitch.getSendRepeat()   = ")); Serial.println(rfSwitch.getSendRepeat(), DEC);
-  /* rfSwitch.setSendPreDelay(10); */ Serial.print(F("## rfSwitch.getSendPreDelay() = ")); Serial.println(rfSwitch.getSendPreDelay(), DEC);
-  /* rfSwitch.setRecvTimeout(250); */ Serial.print(F("## rfSwitch.getRecvTimeout()  = ")); Serial.println(rfSwitch.getRecvTimeout(), DEC);
+  /* rfSwitch.setRecvTimeout(250); */ Serial.print(F("## rfSwitch.getRecvTimeout() = ")); Serial.println(rfSwitch.getRecvTimeout(), DEC);
 }
 
 
@@ -63,22 +60,10 @@ void loop() {
   int code, repeat;
 
   if (rfSwitch.recv(&code, &repeat)) {
-	Serial.println(F("## ---"));
+    Serial.println(F("## ---"));
     Serial.print(F("## code = 0b")); Serial.print(code, BIN); Serial.print(F(", repeat = ")); Serial.print(repeat, DEC); Serial.println();
     Serial.print(F("## senderId = 0b")); Serial.print(rfSwitch.getRecvSenderId(code), BIN); Serial.print(F(", deviceId = 0b")); Serial.print(rfSwitch.getRecvDeviceId(code), BIN); Serial.print(F(", command = 0b")); Serial.print(rfSwitch.getRecvCommand(code), BIN); Serial.println();
     Serial.print(F("## getRecvPulseWidthUS = ")); Serial.println(rfSwitch.getRecvPulseWidthUS(), DEC);
-
-    switch (code) {
-      case BrennenstuhlRCS1000N_CODE(RFSENDER_ID, RFSWITCH_D, BrennenstuhlRCS1000N::SWITCH_ON): {
-        Serial.println(F("ON"));
-        rfSwitch.sendSwitchOn(RFSENDER_ID, RFSWITCH_A); 
-      } break;
-      
-      case BrennenstuhlRCS1000N_CODE(RFSENDER_ID, RFSWITCH_D, BrennenstuhlRCS1000N::SWITCH_OFF): {
-        Serial.println(F("OFF"));
-        rfSwitch.sendSwitchOff(RFSENDER_ID, RFSWITCH_A); 
-      } break;
-    }
   }
 
   rfSwitch.loop();
