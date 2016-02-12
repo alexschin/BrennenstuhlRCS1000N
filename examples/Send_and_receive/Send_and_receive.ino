@@ -70,13 +70,19 @@ void loop() {
 
     switch (code) {
       case BrennenstuhlRCS1000N_CODE(RFSENDER_ID, RFSWITCH_D, BrennenstuhlRCS1000N::SWITCH_ON): {
-        Serial.println(F("ON"));
+        Serial.println(F("ON --> SENDING..."));
         rfSwitch.sendSwitchOn(RFSENDER_ID, RFSWITCH_A); 
+        rfSwitch.sendSwitchOn(RFSENDER_ID, RFSWITCH_B); 
+        rfSwitch.sendSwitchOn(RFSENDER_ID, RFSWITCH_C); 
+        Serial.println(F("...END"));
       } break;
       
       case BrennenstuhlRCS1000N_CODE(RFSENDER_ID, RFSWITCH_D, BrennenstuhlRCS1000N::SWITCH_OFF): {
-        Serial.println(F("OFF"));
+        Serial.println(F("OFF --> SENDING..."));
         rfSwitch.sendSwitchOff(RFSENDER_ID, RFSWITCH_A); 
+        rfSwitch.sendSwitchOff(RFSENDER_ID, RFSWITCH_B); 
+        rfSwitch.sendSwitchOff(RFSENDER_ID, RFSWITCH_C); 
+        Serial.println(F("...END"));
       } break;
     }
   }
