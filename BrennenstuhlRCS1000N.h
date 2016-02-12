@@ -4,7 +4,7 @@
   
   Copyright (c) 2016 Alexander Schindowski.  All right reserved.
   
-  Project home: http://github.com/alexschin/Sources
+  Project home: http://github.com/alexschin/BrennenstuhlRCS1000N
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
