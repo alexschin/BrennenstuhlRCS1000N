@@ -41,8 +41,6 @@ BrennenstuhlRCS1000N rfSwitch(BrennenstuhlRCS1000N::NO_PIN, PIN_RFSWITCH_RECV);
 
 
 void setup() {
-  ::pinMode(D4, OUTPUT); ::digitalWrite(D4, LOW);
-  
   Serial.begin(115200); 
   #if defined(ESP8266)
   delay(100); Serial.println();
