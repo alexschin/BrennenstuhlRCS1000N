@@ -73,7 +73,7 @@ static inline int timings_clear() {
 
 
 // *** SEND BUFFER ***
-#define SEND_BUFFER_SIZE  5
+#define SEND_BUFFER_SIZE  15
 static struct SEND_BUFFER_ITEM {
   unsigned int code;
   unsigned int repeat;
