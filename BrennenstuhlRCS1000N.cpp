@@ -122,10 +122,10 @@ static void rcv_handleInterrupt() {
 }
 
 static void rcv_enable() {
+  _rcv_state &= ~RECV_STATE_DISABLED;
   if (_pinRCV != BrennenstuhlRCS1000N::NO_PIN) {
     attachInterrupt(digitalPinToInterrupt(_pinRCV), rcv_handleInterrupt, CHANGE);
   }
-  _rcv_state &= ~RECV_STATE_DISABLED;
 }
 
 static void rcv_disable() {
@@ -137,7 +137,8 @@ static void rcv_disable() {
 
 
 static bool rcv_getReceivedValue(unsigned int* value) {
-  if (!(_rcv_state & RECV_STATE_NEWCODE)) return false;
+  if (!(_rcv_state & RECV_STATE_NEWCODE))
+    return false;
 
   rcv_disable();
   unsigned int code = 0;
@@ -270,25 +271,26 @@ void BrennenstuhlRCS1000N::loop() {
 
   if (_pinSND != NO_PIN) {
 	  if (_send_buffer[0].repeat != 0) {
-		if (_last_millis != millis()) {
-		  
-		  if (_send_buffer[0].preDelay != 0) {
-			_send_buffer[0].preDelay--;
-		  } else {
-			_send(_send_buffer[0].code);
-	  
-			if ((-- _send_buffer[0].repeat) == 0) {            
-			  for (uint8_t i = 1; i < SEND_BUFFER_SIZE; i++) {
-				_send_buffer[i - 1] = _send_buffer[i];
-				if (_send_buffer[i].repeat == 0) break;
-				_send_buffer[i].repeat = 0;
-			  }        
-			}
-		  }
+      if (_last_millis != millis()) {
+        
+        if (_send_buffer[0].preDelay != 0) {
+          _send_buffer[0].preDelay--;
+        } else {
+          _send(_send_buffer[0].code);
+        
+          if ((--_send_buffer[0].repeat) == 0) {            
+            for (uint8_t i = 1; i < SEND_BUFFER_SIZE; i++) {
+              _send_buffer[i - 1] = _send_buffer[i];
+              if (_send_buffer[i].repeat == 0)
+                break;
+              _send_buffer[i].repeat = 0;
+            }        
+          }
+        }
 
-		  _last_millis = millis();
-		}
-		return;
+        _last_millis = millis();
+      }
+      return;
 	  }
   }
 
@@ -296,39 +298,36 @@ void BrennenstuhlRCS1000N::loop() {
 	  unsigned int _recv_code;
 	  
 	  if (rcv_getReceivedValue(&_recv_code)) {
-		
-		if ((_recv_code & 0b111110000000) != 0 && (_recv_code & 0b000001111100) != 0 && (_recv_code & 0b000000000011) != 0) {
-		  if (_last_recv_code != _recv_code) {
-			_last_recv_code = _recv_code;
-			_last_recv_code_repeat = 1;
-		  } else {
-			_last_recv_code_repeat += 1;
-		  }
-		}
-		_last_recv_code_delay = _recv_timeout;
-		return;
+      if ((_recv_code & 0b111110000000) != 0 && (_recv_code & 0b000001111100) != 0 && (_recv_code & 0b000000000011) != 0) {
+        if (_last_recv_code != _recv_code) {
+          _last_recv_code = _recv_code;
+          _last_recv_code_repeat = 1;
+        } else {
+          _last_recv_code_repeat += 1;
+        }
+      }
+      _last_recv_code_delay = _recv_timeout;
+      return;
 	  } 
 	  
 	  if (_last_millis != millis()) {
-
-		if (_last_recv_code_delay != 0 && (-- _last_recv_code_delay) == 0) {
-		  if (_last_recv_code != 0 && _last_recv_code_repeat >= 1) {
-			for (uint8_t i = 0; i < RECV_BUFFER_SIZE; i++) {
-			  struct RECV_BUFFER_ITEM* itm = &(_recv_buffer[i]);
-
-			  if (itm->code == 0) {
-				itm->code   = _last_recv_code;
-				itm->repeat = _last_recv_code_repeat;
-				break;
-			  }
-			}
-			
-			_last_recv_code = _last_recv_code_repeat = 0;
-		  }
-		}
-		
-		_last_millis = millis();
-		return;
+      if (_last_recv_code_delay != 0 && (--_last_recv_code_delay) == 0) {
+        if (_last_recv_code != 0 && _last_recv_code_repeat >= 1) {
+          for (uint8_t i = 0; i < RECV_BUFFER_SIZE; i++) {
+            struct RECV_BUFFER_ITEM* itm = &(_recv_buffer[i]);
+            if (itm->code == 0) {
+              itm->code   = _last_recv_code;
+              itm->repeat = _last_recv_code_repeat;
+              break;
+            }
+          }
+          
+          _last_recv_code = _last_recv_code_repeat = 0;
+        }
+      }
+      
+      _last_millis = millis();
+      return;
 	  }
   }
 }
@@ -354,20 +353,20 @@ bool BrennenstuhlRCS1000N::send(int code, int repeat, int pre_delay) {
 
 
 bool BrennenstuhlRCS1000N::recv(int* code_value, int* code_repeat) {
-  if (_recv_buffer[0].code != 0) {
-    *code_value = _recv_buffer[0].code;
-    if (code_repeat != NULL) *code_repeat = _recv_buffer[0].repeat;
+  if (_recv_buffer[0].code == 0)
+    return false;
+  
+  if (code_value != NULL)  *code_value  = _recv_buffer[0].code;
+  if (code_repeat != NULL) *code_repeat = _recv_buffer[0].repeat;
 
-    for (uint8_t i = 1; i < RECV_BUFFER_SIZE; i++) {
-      _recv_buffer[i - 1] = _recv_buffer[i];
-      if (_recv_buffer[i].code == 0) break;
-      _recv_buffer[i].code = 0;
-    }
-
-    return true;
+  for (uint8_t i = 1; i < RECV_BUFFER_SIZE; i++) {
+    _recv_buffer[i - 1] = _recv_buffer[i];
+    if (_recv_buffer[i].code == 0)
+      break;
+    _recv_buffer[i].code = 0;
   }
 
-  return false;
+  return true;
 }
 
 #endif
