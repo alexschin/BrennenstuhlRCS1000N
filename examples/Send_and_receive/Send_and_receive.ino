@@ -23,8 +23,6 @@
 
 #include <BrennenstuhlRCS1000N.h>
 
-#define RFSENDER_ID     0b11111
-
 #define RFSWITCH_A      0b10000
 #define RFSWITCH_B      0b01000
 #define RFSWITCH_C      0b00100
@@ -72,8 +70,8 @@ void loop() {
     Serial.print(F("## senderId = 0b")); Serial.print(senderId, BIN); 
     Serial.print(F(", deviceId = 0b"));  Serial.print(deviceId, BIN); 
     Serial.print(F(", command = 0b"));   Serial.print(command , BIN); 
+    Serial.print(F(", pulse width = ")); Serial.print(rfSwitch.getRecvPulseWidthUS(), DEC); Serial.print(F(" us"));
     Serial.println();
-    Serial.print(F("## getRecvPulseWidthUS = ")); Serial.println(rfSwitch.getRecvPulseWidthUS(), DEC);
 
     if (deviceId == RFSWITCH_D) {
       switch (command) {
