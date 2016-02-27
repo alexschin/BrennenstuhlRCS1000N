@@ -63,9 +63,9 @@ void loop() {
   int code, repeat;
 
   if (rfSwitch.recv(&code, &repeat)) {
-    int senderId = rfSwitch.getRecvSenderId(code);
-    int deviceId = rfSwitch.getRecvDeviceId(code);
-    int command  = rfSwitch.getRecvCommand(code);
+    int senderId = rfSwitch.getRecvSenderId(code);  // sender id
+    int deviceId = rfSwitch.getRecvDeviceId(code);  // device/switch id
+    int command  = rfSwitch.getRecvCommand(code);   // command on, off
     
     Serial.println(F("## ---"));
     Serial.print(F("## code = 0b")); Serial.print(code, BIN); Serial.print(F(", repeat = ")); Serial.print(repeat, DEC); Serial.println();
