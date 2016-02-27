@@ -1,7 +1,5 @@
-BrennenstuhlRCS1000N
-====================
-
-Brennenstuhl RCS 1000N RF-Switch Arduino library
+#BrennenstuhlRCS1000N
+##Brennenstuhl RCS 1000N RF-Switch Arduino library
 
 - List1
 - List2
