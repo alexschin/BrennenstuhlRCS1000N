@@ -2,7 +2,8 @@
 A small Arduino library for Brennenstuhl RCS 1000N RF-switches and compatible devices.
 Works for me with Arduino and ESP8266.
 
-###Includes
+
+### Quick Start
 
 ```cpp
 #include <BrennenstuhlRCS1000N.h>
@@ -28,7 +29,3 @@ void loop() {
 
 ###API - BrennenstuhlRCS1000N
 
-* List1
-* List2
-  * List2.1
-  * List2.2
