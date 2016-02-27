@@ -9,15 +9,16 @@ Works for me with Arduino and ESP8266.
 #include <BrennenstuhlRCS1000N.h>
 
 #if defined(ESP8266)
-  #define PIN_RFSWITCH_RECV  D2
-  #define PIN_RFSWITCH_SEND  D4
+  #define SENDER_PIN    D2
+  #define RECEIVER_PIN  D4
 #else
-  #define PIN_RFSWITCH_RECV  2
-  #define PIN_RFSWITCH_SEND  4
+  #define SENDER_PIN    2
+  #define RECEIVER_PIN  4
 #endif
 
 // connect rf-switch
-BrennenstuhlRCS1000N rfSwitch(PIN_RFSWITCH_SEND, PIN_RFSWITCH_RECV); // or use BrennenstuhlRCS1000N::NO_PIN 
+BrennenstuhlRCS1000N rfSwitch(SENDER_PIN, RECEIVER_PIN); // use BrennenstuhlRCS1000N::NO_PIN
+                                                         // for no pin usage
 
 void setup() {
   rfSwitch.begin();
