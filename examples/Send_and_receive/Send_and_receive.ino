@@ -40,6 +40,9 @@
 BrennenstuhlRCS1000N rfSwitch(PIN_RFSWITCH_SEND, PIN_RFSWITCH_RECV);
 
 
+char* toBIN(uint32_t value, uint8_t length);
+
+
 void setup() {
   Serial.begin(115200); 
 #if defined(ESP8266)
@@ -67,9 +70,10 @@ void loop() {
     
     Serial.println(F("## ---"));
     Serial.print(F("## code = 0b")); Serial.print(code, BIN); Serial.print(F(", repeat = ")); Serial.print(repeat, DEC); Serial.println();
-    Serial.print(F("## senderId = 0b")); Serial.print(senderId, BIN); 
-    Serial.print(F(", deviceId = 0b"));  Serial.print(deviceId, BIN); 
-    Serial.print(F(", command = 0b"));   Serial.print(command , BIN); 
+    Serial.print(F("## senderId = 0b")); Serial.print(toBIN(senderId, 5)); 
+    Serial.print(F(", deviceId = 0b"));  Serial.print(toBIN(deviceId, 5));
+    Serial.print(F(", command = 0b"));   Serial.print(toBIN(command , 2));
+    switch(command){ case BrennenstuhlRCS1000N::SWITCH_ON:{Serial.print(F(" (ON)"));} break; case BrennenstuhlRCS1000N::SWITCH_OFF:{Serial.print(F(" (OFF)"));} break; }
     Serial.print(F(", pulse width = ")); Serial.print(rfSwitch.getRecvPulseWidthUS(), DEC); Serial.print(F(" us"));
     Serial.println();
 
@@ -93,4 +97,20 @@ void loop() {
   }
 
   rfSwitch.loop();
+}
+
+
+char* toBIN(uint32_t value, uint8_t length) {
+  static char s[(8 * sizeof(value)) + 1];
+  int i = 8 * sizeof(value); 
+  
+  if (length > i ) length = i;
+
+  s[i] = 0;
+  while (length--) {
+    s[--i] = (value & 1) ? '1' : '0';
+    value >>= 1;
+  }
+  
+  return &s[i];
 }
